@@ -134,3 +134,9 @@ variable "cluster_delete_timeout" {
   description = "Timeout value when deleting the EKS cluster."
   default     = "15m"
 }
+
+variable "enabled_cluster_log_types" {
+  description = "Control plane log types to be enabled. See https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html"
+  type        = "list"
+  default     = []
+}
