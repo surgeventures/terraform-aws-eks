@@ -140,3 +140,10 @@ variable "enabled_cluster_log_types" {
   type        = "list"
   default     = []
 }
+
+variable "worker_group_tags" {
+  description = "A map defining extra tags to be applied to the worker group ASG."
+  type        = "list"
+
+  default = []
+}
