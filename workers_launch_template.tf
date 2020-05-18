@@ -278,6 +278,39 @@ resource "aws_launch_template" "workers_launch_template" {
         )}-eks_asg"
       },
       var.tags,
+      {
+        for element in 
+          lookup(
+            var.worker_groups_launch_template[count.index],
+            "tags",
+            count.index,
+          ) :
+        element["key"] => element["value"] if length(regexall("k8s.io/cluster-autoscaler", element["key"])) == 0 # do not pass autoscaler control tags used by kubernetes autoscaler
+      }
+    )
+  }
+
+  tag_specifications {
+    resource_type = "instance"
+
+    tags = merge(
+      {
+        "Name" = "${aws_eks_cluster.this.name}-${lookup(
+          var.worker_groups_launch_template[count.index],
+          "name",
+          count.index,
+        )}-eks_asg"
+      },
+      var.tags,
+      {
+        for element in 
+          lookup(
+            var.worker_groups_launch_template[count.index],
+            "tags",
+            count.index,
+          ) :
+        element["key"] => element["value"] if length(regexall("k8s.io/cluster-autoscaler", element["key"])) == 0 # do not pass autoscaler control tags used by kubernetes autoscaler
+      }
     )
   }
 
