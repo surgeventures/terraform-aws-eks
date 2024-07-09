@@ -1,5 +1,9 @@
 name: Release
 
+
+env:
+  ImageOS: ubuntu22
+
 on:
   workflow_dispatch:
   push:
@@ -15,7 +19,10 @@ on:
 jobs:
   release:
     name: Release
-    runs-on: ubuntu-latest
+    runs-on:
+      - runs-on
+      - runner=2cpu-linux-x64
+      - "run-id=${{ github.run_id }}"
     # Skip running release workflow on forks
     if: github.repository_owner == 'terraform-aws-modules'
     steps:

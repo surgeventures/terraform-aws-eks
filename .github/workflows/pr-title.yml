@@ -1,5 +1,9 @@
 name: 'Validate PR title'
 
+
+env:
+  ImageOS: ubuntu22
+
 on:
   pull_request_target:
     types:
@@ -10,7 +14,10 @@ on:
 jobs:
   main:
     name: Validate PR title
-    runs-on: ubuntu-latest
+    runs-on:
+      - runs-on
+      - runner=2cpu-linux-x64
+      - "run-id=${{ github.run_id }}"
     steps:
       # Please look up the latest version from
       # https://github.com/amannn/action-semantic-pull-request/releases

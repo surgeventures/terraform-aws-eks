@@ -7,12 +7,16 @@ on:
       - master
 
 env:
+  ImageOS: ubuntu22
   TERRAFORM_DOCS_VERSION: v0.16.0
 
 jobs:
   collectInputs:
     name: Collect workflow inputs
-    runs-on: ubuntu-latest
+    runs-on:
+      - runs-on
+      - runner=2cpu-linux-x64
+      - "run-id=${{ github.run_id }}"
     outputs:
       directories: ${{ steps.dirs.outputs.directories }}
     steps:
@@ -26,7 +30,10 @@ jobs:
   preCommitMinVersions:
     name: Min TF pre-commit
     needs: collectInputs
-    runs-on: ubuntu-latest
+    runs-on:
+      - runs-on
+      - runner=2cpu-linux-x64
+      - "run-id=${{ github.run_id }}"
     strategy:
       matrix:
         directory: ${{ fromJson(needs.collectInputs.outputs.directories) }}
@@ -58,7 +65,10 @@ jobs:
 
   preCommitMaxVersion:
     name: Max TF pre-commit
-    runs-on: ubuntu-latest
+    runs-on:
+      - runs-on
+      - runner=2cpu-linux-x64
+      - "run-id=${{ github.run_id }}"
     needs: collectInputs
     steps:
       - name: Checkout
