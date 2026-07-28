@@ -31,7 +31,7 @@ jobs:
 
       - name: Get root directories
         id: dirs
-        uses: clowdhaus/terraform-composite-actions/directories@eb963bdb7f8b1c64e29b6f4b08c7e5eab1be4bd2 # v1.3.0
+        uses: step-security/terraform-composite-actions/directories@2eac41b76974f2ae6fd8f1ad78d51eb3bdaed7b0 # v1.14.0
 
   preCommitMinVersions:
     name: Min TF pre-commit
@@ -55,14 +55,14 @@ jobs:
 
       - name: Terraform min/max versions
         id: minMax
-        uses: clowdhaus/terraform-min-max@7009a64f997e57294f56f7c13b584e61574e7be9 # v1.0.3
+        uses: step-security/terraform-min-max@7c01b6babe47de9dcfdaa426c3354651299c8232 # v3.0.1
         with:
           directory: ${{ matrix.directory }}
 
       - name: Pre-commit Terraform ${{ steps.minMax.outputs.minVersion }}
         # Run only validate pre-commit check on min version supported
         if: ${{ matrix.directory !=  '.' }}
-        uses: clowdhaus/terraform-composite-actions/pre-commit@eb963bdb7f8b1c64e29b6f4b08c7e5eab1be4bd2 # v1.3.0
+        uses: step-security/terraform-composite-actions/pre-commit@2eac41b76974f2ae6fd8f1ad78d51eb3bdaed7b0 # v1.14.0
         with:
           terraform-version: ${{ steps.minMax.outputs.minVersion }}
           args: 'terraform_validate --color=always --show-diff-on-failure --files ${{ matrix.directory }}/*'
@@ -70,7 +70,7 @@ jobs:
       - name: Pre-commit Terraform ${{ steps.minMax.outputs.minVersion }}
         # Run only validate pre-commit check on min version supported
         if: ${{ matrix.directory ==  '.' }}
-        uses: clowdhaus/terraform-composite-actions/pre-commit@eb963bdb7f8b1c64e29b6f4b08c7e5eab1be4bd2 # v1.3.0
+        uses: step-security/terraform-composite-actions/pre-commit@2eac41b76974f2ae6fd8f1ad78d51eb3bdaed7b0 # v1.14.0
         with:
           terraform-version: ${{ steps.minMax.outputs.minVersion }}
           args: 'terraform_validate --color=always --show-diff-on-failure --files $(ls *.tf)'
@@ -97,10 +97,10 @@ jobs:
 
       - name: Terraform min/max versions
         id: minMax
-        uses: clowdhaus/terraform-min-max@7009a64f997e57294f56f7c13b584e61574e7be9 # v1.0.3
+        uses: step-security/terraform-min-max@7c01b6babe47de9dcfdaa426c3354651299c8232 # v3.0.1
 
       - name: Pre-commit Terraform ${{ steps.minMax.outputs.maxVersion }}
-        uses: clowdhaus/terraform-composite-actions/pre-commit@eb963bdb7f8b1c64e29b6f4b08c7e5eab1be4bd2 # v1.3.0
+        uses: step-security/terraform-composite-actions/pre-commit@2eac41b76974f2ae6fd8f1ad78d51eb3bdaed7b0 # v1.14.0
         with:
           terraform-version: ${{ steps.minMax.outputs.maxVersion }}
           terraform-docs-version: ${{ env.TERRAFORM_DOCS_VERSION }}
