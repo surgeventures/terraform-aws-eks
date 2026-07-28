@@ -31,7 +31,7 @@ jobs:
 
       - name: Get root directories
         id: dirs
-        uses: clowdhaus/terraform-composite-actions/directories@eb963bdb7f8b1c64e29b6f4b08c7e5eab1be4bd2 # v1.3.0
+        uses: step-security/terraform-composite-actions/directories@2eac41b76974f2ae6fd8f1ad78d51eb3bdaed7b0 # v1.14.0
 
   preCommitMinVersions:
     name: Min TF pre-commit
