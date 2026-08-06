@@ -42,7 +42,7 @@ jobs:
           fetch-depth: 0
 
       - name: Release
-        uses: cycjimmy/semantic-release-action@5982a02995853159735cb838992248c4f0f16166 # v2
+        uses: step-security/semantic-release-action@874b53dfc0c44e065cbc8c3e8bc04af7b6ad69fb # v6.0.0
         with:
           semantic_version: 18.0.0
           extra_plugins: |
