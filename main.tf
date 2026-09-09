@@ -341,9 +341,10 @@ resource "aws_eks_addon" "this" {
   cluster_name = aws_eks_cluster.this[0].name
   addon_name   = try(each.value.name, each.key)
 
-  addon_version            = lookup(each.value, "addon_version", null)
-  resolve_conflicts        = lookup(each.value, "resolve_conflicts", null)
-  service_account_role_arn = lookup(each.value, "service_account_role_arn", null)
+  addon_version               = lookup(each.value, "addon_version", null)
+  resolve_conflicts_on_create = lookup(each.value, "resolve_conflicts_on_create", lookup(each.value, "resolve_conflicts", null))
+  resolve_conflicts_on_update = lookup(each.value, "resolve_conflicts_on_update", lookup(each.value, "resolve_conflicts", null))
+  service_account_role_arn    = lookup(each.value, "service_account_role_arn", null)
 
   depends_on = [
     module.fargate_profile,

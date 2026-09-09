@@ -368,7 +368,7 @@ resource "aws_iam_role_policy_attachment" "additional" {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 3.0"
+  version = "~> 6.0"
 
   name = local.name
   cidr = "10.0.0.0/16"
@@ -377,12 +377,13 @@ module "vpc" {
   private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
   public_subnets  = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
 
-  enable_ipv6                     = true
-  assign_ipv6_address_on_creation = true
-  create_egress_only_igw          = true
+  enable_ipv6            = true
+  create_egress_only_igw = true
 
-  public_subnet_ipv6_prefixes  = [0, 1, 2]
-  private_subnet_ipv6_prefixes = [3, 4, 5]
+  public_subnet_ipv6_prefixes                    = [0, 1, 2]
+  public_subnet_assign_ipv6_address_on_creation  = true
+  private_subnet_ipv6_prefixes                   = [3, 4, 5]
+  private_subnet_assign_ipv6_address_on_creation = true
 
   enable_nat_gateway   = true
   single_nat_gateway   = true
