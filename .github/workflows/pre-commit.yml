@@ -9,6 +9,7 @@ on:
 env:
   ImageOS: ubuntu22
   TERRAFORM_DOCS_VERSION: v0.16.0
+  TFLINT_VERSION: v0.64.0
 
 jobs:
   collectInputs:
@@ -65,6 +66,7 @@ jobs:
         uses: step-security/terraform-composite-actions/pre-commit@2eac41b76974f2ae6fd8f1ad78d51eb3bdaed7b0 # v1.14.0
         with:
           terraform-version: ${{ steps.minMax.outputs.minVersion }}
+          tflint-version: ${{ env.TFLINT_VERSION }}
           args: 'terraform_validate --color=always --show-diff-on-failure --files ${{ matrix.directory }}/*'
 
       - name: Pre-commit Terraform ${{ steps.minMax.outputs.minVersion }}
@@ -73,6 +75,7 @@ jobs:
         uses: step-security/terraform-composite-actions/pre-commit@2eac41b76974f2ae6fd8f1ad78d51eb3bdaed7b0 # v1.14.0
         with:
           terraform-version: ${{ steps.minMax.outputs.minVersion }}
+          tflint-version: ${{ env.TFLINT_VERSION }}
           args: 'terraform_validate --color=always --show-diff-on-failure --files $(ls *.tf)'
 
   preCommitMaxVersion:
@@ -104,3 +107,4 @@ jobs:
         with:
           terraform-version: ${{ steps.minMax.outputs.maxVersion }}
           terraform-docs-version: ${{ env.TERRAFORM_DOCS_VERSION }}
+          tflint-version: ${{ env.TFLINT_VERSION }}
