@@ -72,11 +72,11 @@ module "eks" {
 ################################################################################
 
 provider "helm" {
-  kubernetes {
+  kubernetes = {
     host                   = module.eks.cluster_endpoint
     cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
 
-    exec {
+    exec = {
       api_version = "client.authentication.k8s.io/v1beta1"
       command     = "aws"
       # This requires the awscli to be installed locally where Terraform is executed
@@ -136,25 +136,24 @@ resource "helm_release" "karpenter" {
   chart      = "karpenter"
   version    = "0.8.2"
 
-  set {
-    name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
-    value = module.karpenter_irsa.iam_role_arn
-  }
-
-  set {
-    name  = "clusterName"
-    value = module.eks.cluster_id
-  }
-
-  set {
-    name  = "clusterEndpoint"
-    value = module.eks.cluster_endpoint
-  }
-
-  set {
-    name  = "aws.defaultInstanceProfile"
-    value = aws_iam_instance_profile.karpenter.name
-  }
+  set = [
+    {
+      name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
+      value = module.karpenter_irsa.iam_role_arn
+    },
+    {
+      name  = "clusterName"
+      value = module.eks.cluster_id
+    },
+    {
+      name  = "clusterEndpoint"
+      value = module.eks.cluster_endpoint
+    },
+    {
+      name  = "aws.defaultInstanceProfile"
+      value = aws_iam_instance_profile.karpenter.name
+    },
+  ]
 }
 
 # Workaround - https://github.com/hashicorp/terraform-provider-kubernetes/issues/1380#issuecomment-967022975
@@ -225,7 +224,7 @@ resource "kubectl_manifest" "karpenter_example_deployment" {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 3.0"
+  version = "~> 6.0"
 
   name = local.name
   cidr = "10.0.0.0/16"
